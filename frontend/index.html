@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyStatsU — Academic Performance Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/pages/index.css" />
+</head>
+<body>
+
+<!-- ════════════ LEFT ════════════ -->
+<div class="left">
+  <div class="dc dc1"></div>
+  <div class="dc dc2"></div>
+  <div class="dc dc3"></div>
+
+  <div class="brand">
+    <div class="brand-row">
+      <div class="brand-name">My<span>Stats</span>U</div>
+    </div>
+    <div class="brand-tag">Academic Performance Tracker</div>
+  </div>
+
+  <div class="hero">
+    <h1>Pantau <em>prestasi</em><br>akademikmu<br>dengan cerdas</h1>
+    <p>Lacak nilai, jam belajar, dan prediksi IPK akhir semester — semua dalam satu platform yang personal.</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <div class="card-label">Grafik IPK Real-time</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+      </div>
+      <div class="card-label">Sistem Badge &amp; Reward</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      </div>
+      <div class="card-label">Prediksi Performa</div>
+    </div>
+  </div>
+
+  <div class="tu">
+    <div class="tu-bar"></div>
+    <div class="tu-text">Telkom University</div>
+  </div>
+</div>
+
+<!-- ════════════ RIGHT ════════════ -->
+<div class="right">
+  <div class="auth-box">
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login')">Masuk</button>
+      <button class="tab" onclick="switchTab('register')">Daftar</button>
+    </div>
+
+    <!-- alert global -->
+    <div class="alert" id="alertBox">
+      <div class="adot" id="alertDot"></div>
+      <span id="alertMsg"></span>
+    </div>
+
+    <!-- ── LOGIN ── -->
+    <div class="sec active" id="secLogin">
+      <div class="form-title">Selamat Datang</div>
+      <div class="form-sub">Masuk ke akun MyStatsU kamu</div>
+
+      <div class="field">
+        <label>Email</label>
+        <div class="wrap">
+          <div class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg></div>
+          <input type="email" id="loginEmail" placeholder="email@student.telkomuniversity.ac.id" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="wrap">
+          <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <input type="password" id="loginPass" placeholder="Masukkan password" />
+          <button class="eye" onclick="togglePass('loginPass',this)" data-s="0">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn" id="loginBtn" onclick="doLogin()">
+        <span class="btxt">Masuk</span>
+        <span class="spinner"></span>
+      </button>
+
+      <div class="admin-link">
+        Login sebagai <a onclick="openModal()">Admin</a>
+      </div>
+    </div>
+
+    <!-- ── REGISTER ── -->
+    <div class="sec" id="secReg">
+      <div class="form-title">Buat Akun</div>
+      <div class="form-sub">Daftar dan mulai lacak performa akademikmu</div>
+
+      <div class="row2">
+        <div class="field">
+          <label>Nama Lengkap</label>
+          <div class="wrap">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <input type="text" id="regNama" placeholder="Nama kamu" />
+          </div>
+        </div>
+        <div class="field">
+          <label>NIM</label>
+          <div class="wrap">
+            <div class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+            <input type="text" id="regNim" placeholder="103012xxxxxxx" />
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <div class="wrap">
+          <div class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg></div>
+          <input type="email" id="regEmail" placeholder="email@student.telkomuniversity.ac.id" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Jurusan</label>
+        <div class="wrap">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+          <select id="regJurusan">
+            <option value="">-- Pilih Jurusan --</option>
+            <option>S1 Informatika</option>
+            <option>S1 Sistem Informasi</option>
+            <option>S1 Teknik Komputer</option>
+            <option>S1 Teknik Elektro</option>
+            <option>S1 Teknik Telekomunikasi</option>
+            <option>S1 Rekayasa Perangkat Lunak</option>
+            <option>S1 Manajemen</option>
+            <option>S1 Akuntansi</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="wrap">
+          <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <input type="password" id="regPass" placeholder="Min. 6 karakter" />
+          <button class="eye" onclick="togglePass('regPass',this)" data-s="0">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn" id="regBtn" onclick="doRegister()">
+        <span class="btxt">Buat Akun</span>
+        <span class="spinner"></span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════ ADMIN MODAL ════════════ -->
+<div class="overlay" id="adminOverlay">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title">Login Admin</div>
+      <button class="modal-x" onclick="closeModal()">&#215;</button>
+    </div>
+
+    <div class="admin-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Akses Khusus Admin
+    </div>
+
+    <div class="alert" id="adminAlertBox">
+      <div class="adot" id="adminAlertDot"></div>
+      <span id="adminAlertMsg"></span>
+    </div>
+
+    <div class="field">
+      <label>Email Admin</label>
+      <div class="wrap">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg></div>
+        <input type="email" id="adminEmail" placeholder="admin@tubes.ac.id" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <div class="wrap">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <input type="password" id="adminPass" placeholder="Password admin" />
+        <button class="eye" onclick="togglePass('adminPass',this)" data-s="0">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <button class="btn" id="adminBtn" onclick="doAdminLogin()">
+      <span class="btxt">Masuk sebagai Admin</span>
+      <span class="spinner"></span>
+    </button>
+  </div>
+</div>
+
+<!-- ════════════ DASHBOARD ════════════ -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-icon">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+  </div>
+  <h2>Halo, <span id="dashName">...</span>!</h2>
+  <p>Login berhasil. Dashboard MyStatsU sedang dalam pengembangan. Fitur IPK, Jam Belajar, Insight, dan Badge akan segera hadir.</p>
+  <div class="role-tag" id="dashRole"></div>
+  <button class="logout-btn" onclick="doLogout()">Keluar</button>
+</div>
+  <script src="js/pages/index.js"></script>
+</body>
+</html>

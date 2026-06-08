@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyStatsU — Jam Belajar</title>
+  <script src="js/auth.js" data-require-auth></script>
+  <script src="js/app-utils.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/pages/jam-belajar.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="dc dc1"></div><div class="dc dc2"></div>
+  <div class="sb-brand">
+    <div class="sb-brand-name">My<span>Stats</span>U</div>
+    <div class="sb-brand-tag">Academic Tracker</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="nav-section-label">Utama</div>
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="nilai.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      Input Nilai
+    </a>
+    <a class="nav-item active" href="jam-belajar.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Jam Belajar
+    </a>
+    <div class="nav-section-label">Analitik</div>
+    <a class="nav-item" href="insight.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Insight
+    </a>
+    <a class="nav-item" href="prediksi.html">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Prediksi IPK
+    </a>
+    <div class="nav-section-label">Lainnya</div>
+    <a class="nav-item" href="badge.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+      Badge & Reward
+    </a>
+    <a class="nav-item" href="notifikasi.html">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Notifikasi
+      <span class="nav-badge" hidden>0</span>
+    </a>
+  </nav>
+  <div style="padding:0 10px;position:relative;z-index:2;">
+    <div class="sb-user">
+      <div class="sb-user-row">
+        <div class="sb-avatar">A</div>
+        <div><div class="sb-user-name">Ahmad Fauzi</div><div class="sb-user-nim">103012300001</div></div>
+      </div>
+    </div>
+    <a class="nav-item" href="index.html" style="margin-top:6px;color:rgba(255,255,255,0.5);">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Keluar
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Jam <em>Belajar</em></h1>
+      <div class="topbar-sub">Pantau dan catat waktu belajarmu setiap hari</div>
+    </div>
+    <div class="topbar-right">
+      <a class="notif-btn" href="notifikasi.html" aria-label="Buka notifikasi"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="notif-dot"></div></a>
+    </div>
+  </div>
+
+  <!-- Stat Cards -->
+  <div class="stat-grid">
+    <div class="stat-card red">
+      <div class="stat-card-top">
+        <div class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <span class="stat-change">Minggu ini</span>
+      </div>
+      <div class="stat-value">24<span style="font-size:16px;letter-spacing:0">j</span></div>
+      <div class="stat-label">Total Jam Belajar</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <span class="stat-change"></span>
+      </div>
+      <div class="stat-value">4.0<span style="font-size:16px;letter-spacing:0">j</span></div>
+      <div class="stat-label">Rata-rata Harian</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+        <span class="stat-change warn"></span>
+      </div>
+      <div class="stat-value">30<span style="font-size:16px;letter-spacing:0">j</span></div>
+      <div class="stat-label">Target Minggu Ini</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+        <span class="stat-change"></span>
+      </div>
+      <div class="stat-value">7</div>
+      <div class="stat-label">Hari Streak</div>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="content-grid">
+
+    <!-- Left: Chart + Log -->
+    <div style="display:flex;flex-direction:column;gap:22px;">
+
+      <!-- Weekly Bar Chart -->
+      <div class="card" style="animation:fadeUp .4s ease .14s both">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Belajar Minggu Ini</div>
+            <div class="card-sub">Senin - Minggu</div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button class="chip active" type="button" data-period="week">Minggu Ini</button>
+            <button class="chip" type="button" data-period="month">Bulan Ini</button>
+          </div>
+        </div>
+
+        <!-- Target Progress -->
+        <div class="target-row">
+          <span class="target-label">Progress target</span>
+          <span class="target-val">24j / 30j</span>
+        </div>
+        <div class="progress-track" style="margin-bottom:24px;">
+          <div class="progress-fill" style="width:80%"></div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="week-chart-wrap">
+          <div class="week-bars">
+            <div class="wday-col">
+              <div class="wday-bar-wrap"><div class="wday-bar active" style="height:83%"><div class="bar-tooltip">5 jam</div></div></div>
+              <div class="wday-meta"><div class="wday-lbl">SEN</div><div class="wday-val">5j</div></div>
+            </div>
+            <div class="wday-col">
+              <div class="wday-bar-wrap"><div class="wday-bar mid" style="height:50%"><div class="bar-tooltip">3 jam</div></div></div>
+              <div class="wday-meta"><div class="wday-lbl">SEL</div><div class="wday-val">3j</div></div>
+            </div>
+            <div class="wday-col">
+              <div class="wday-bar-wrap"><div class="wday-bar active" style="height:67%"><div class="bar-tooltip">4 jam</div></div></div>
+              <div class="wday-meta"><div class="wday-lbl">RAB</div><div class="wday-val">4j</div></div>
+            </div>
+            <div class="wday-col">
+              <div class="wday-bar-wrap"><div class="wday-bar mid" style="height:33%"><div class="bar-tooltip">2 jam</div></div></div>
+              <div class="wday-meta"><div class="wday-lbl">KAM</div><div class="wday-val">2j</div></div>
+            </div>
+            <div class="wday-col">
+              <div class="wday-bar-wrap"><div class="wday-bar active" style="height:100%"><div class="bar-tooltip">6 jam</div></div></div>
+              <div class="wday-meta"><div class="wday-lbl">JUM</div><div class="wday-val">6j</div></div>
+            </div>
+            <div class="wday-col">
+              <div class="wday-bar-wrap"><div class="wday-bar today" style="height:67%"><div class="bar-tooltip">4 jam</div></div></div>
+              <div class="wday-meta today-meta"><div class="wday-lbl">SAB</div><div class="wday-val">4j</div></div>
+            </div>
+            <div class="wday-col">
+              <div class="wday-bar-wrap"><div class="wday-bar low" style="height:5%"><div class="bar-tooltip">0 jam</div></div></div>
+              <div class="wday-meta"><div class="wday-lbl">MIN</div><div class="wday-val">0j</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Session Log -->
+      <div class="card" style="animation:fadeUp .4s ease .2s both">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Sesi Belajar Hari Ini</div>
+            <div class="card-sub">Sabtu, 28 April 2025 · Total 4 jam</div>
+          </div>
+          <button class="chip" type="button" id="toggleSessionsBtn">Semua Sesi</button>
+        </div>
+        <div class="session-list" id="sessionList">
+          <div class="session-item">
+            <div class="session-dot" style="background:#CC0000"></div>
+            <div class="session-info">
+              <div class="session-mk">Pemrograman Web</div>
+              <div class="session-time">08:00 – 10:00 · Baca materi + latihan soal</div>
+            </div>
+            <div class="session-dur">2<span>j</span></div>
+          </div>
+          <div class="session-item">
+            <div class="session-dot" style="background:#2563EB"></div>
+            <div class="session-info">
+              <div class="session-mk">Basis Data</div>
+              <div class="session-time">13:00 – 14:30 · Mengerjakan tugas SQL</div>
+            </div>
+            <div class="session-dur">1.5<span>j</span></div>
+          </div>
+          <div class="session-item">
+            <div class="session-dot" style="background:#16A34A"></div>
+            <div class="session-info">
+              <div class="session-mk">Matematika Diskrit</div>
+              <div class="session-time">19:00 – 19:30 · Review catatan</div>
+            </div>
+            <div class="session-dur">0.5<span>j</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right column -->
+    <div class="right-col">
+
+      <!-- Tambah Sesi -->
+      <div class="card" style="animation:fadeUp .4s ease .16s both">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Catat Sesi Baru</div>
+            <div class="card-sub">Tambah sesi belajar hari ini</div>
+          </div>
+        </div>
+        <div class="add-form">
+          <div class="form-group">
+            <label class="form-label">Mata Kuliah</label>
+            <select class="form-input form-select" id="mk">
+              <option>Pemrograman Web</option>
+              <option>Basis Data</option>
+              <option>Matematika Diskrit</option>
+              <option>Rekayasa Perangkat Lunak</option>
+              <option>Jaringan Komputer</option>
+              <option>Statistika</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tanggal</label>
+            <input type="date" class="form-input" id="tanggal"/>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Durasi (jam)</label>
+              <input type="number" class="form-input" id="durasiJam" min="0" max="24" value="2"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Durasi (menit)</label>
+              <input type="number" class="form-input" id="durasiMenit" min="0" max="59" value="0"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Aktivitas (opsional)</label>
+            <input type="text" class="form-input" id="aktivitas" placeholder="Cth: Baca buku, kerjakan tugas..."/>
+          </div>
+          <button class="btn-primary" id="saveSessionBtn" onclick="simpanJamBelajar()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Simpan Sesi
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="animation:fadeUp .4s ease .18s both">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Target Belajar</div>
+            <div class="card-sub">Atur target sesuai kebutuhanmu</div>
+          </div>
+        </div>
+        <div class="add-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Target mingguan (jam)</label>
+              <input type="number" class="form-input" id="targetWeek" min="1" max="168" value="30"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target bulanan (jam)</label>
+              <input type="number" class="form-input" id="targetMonth" min="1" max="744" value="120"/>
+            </div>
+          </div>
+          <button class="btn-primary" type="button" id="saveTargetBtn">
+            <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+            Simpan Target
+          </button>
+        </div>
+      </div>
+
+      <!-- Per MK Breakdown -->
+      <div class="card" style="animation:fadeUp .4s ease .22s both">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Per Mata Kuliah</div>
+            <div class="card-sub">Minggu ini</div>
+          </div>
+        </div>
+        <div class="mk-breakdown" id="mkBreakdown">
+          <div class="mk-bar-item">
+            <div class="mk-bar-top"><span class="mk-bar-name">Pemrograman Web</span><span class="mk-bar-val">8j</span></div>
+            <div class="mk-track"><div class="mk-fill" style="width:80%;background:var(--red)"></div></div>
+          </div>
+          <div class="mk-bar-item">
+            <div class="mk-bar-top"><span class="mk-bar-name">Basis Data</span><span class="mk-bar-val">6j</span></div>
+            <div class="mk-track"><div class="mk-fill" style="width:60%;background:#2563EB"></div></div>
+          </div>
+          <div class="mk-bar-item">
+            <div class="mk-bar-top"><span class="mk-bar-name">Matematika Diskrit</span><span class="mk-bar-val">4j</span></div>
+            <div class="mk-track"><div class="mk-fill" style="width:40%;background:#16A34A"></div></div>
+          </div>
+          <div class="mk-bar-item">
+            <div class="mk-bar-top"><span class="mk-bar-name">Jaringan Komputer</span><span class="mk-bar-val">3j</span></div>
+            <div class="mk-track"><div class="mk-fill" style="width:30%;background:#D97706"></div></div>
+          </div>
+          <div class="mk-bar-item">
+            <div class="mk-bar-top"><span class="mk-bar-name">Rekayasa PL</span><span class="mk-bar-val">2j</span></div>
+            <div class="mk-track"><div class="mk-fill" style="width:20%;background:#7C3AED"></div></div>
+          </div>
+          <div class="mk-bar-item">
+            <div class="mk-bar-top"><span class="mk-bar-name">Statistika</span><span class="mk-bar-val">1j</span></div>
+            <div class="mk-track"><div class="mk-fill" style="width:10%;background:#0891B2"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heatmap bulanan -->
+      <div class="card" style="animation:fadeUp .4s ease .28s both">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Heatmap April</div>
+            <div class="card-sub">Konsistensi belajar bulan ini</div>
+          </div>
+        </div>
+        <div class="heatmap-grid">
+          <!-- 30 cells for April, filling from Mon -->
+          <div class="heat-cell"></div><!-- filler Mon -->
+          <div class="heat-cell l2"></div><div class="heat-cell l3"></div><div class="heat-cell l1"></div><div class="heat-cell l4"></div><div class="heat-cell l2"></div><div class="heat-cell"></div>
+          <div class="heat-cell l3"></div><div class="heat-cell l4"></div><div class="heat-cell l2"></div><div class="heat-cell l1"></div><div class="heat-cell l3"></div><div class="heat-cell l4"></div><div class="heat-cell l1"></div>
+          <div class="heat-cell l2"></div><div class="heat-cell l3"></div><div class="heat-cell l4"></div><div class="heat-cell l2"></div><div class="heat-cell l1"></div><div class="heat-cell l3"></div><div class="heat-cell"></div>
+          <div class="heat-cell l4"></div><div class="heat-cell l3"></div><div class="heat-cell l2"></div><div class="heat-cell l4"></div><div class="heat-cell today-cell l3"></div><div class="heat-cell l1"></div><div class="heat-cell"></div>
+          <div class="heat-cell l2"></div><div class="heat-cell l1"></div>
+        </div>
+        <div class="heatmap-legend">
+          <span>Kurang</span>
+          <div class="heat-legend-cell" style="background:var(--border)"></div>
+          <div class="heat-legend-cell l1" style="background:rgba(204,0,0,0.15)"></div>
+          <div class="heat-legend-cell l2" style="background:rgba(204,0,0,0.35)"></div>
+          <div class="heat-legend-cell l3" style="background:rgba(204,0,0,0.65)"></div>
+          <div class="heat-legend-cell l4" style="background:var(--red)"></div>
+          <span>Banyak</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+  <script src="js/pages/jam-belajar.js"></script>
+</body>
+</html>

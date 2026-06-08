@@ -1,0 +1,10 @@
+.hero-insight { background:var(--red); border-radius:var(--rl); padding:26px 28px; position:relative; overflow:hidden; color:#fff; }
+    .hero-insight::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.05) 1px,transparent 1px); background-size:32px 32px; }
+    .hero-insight > * { position:relative; z-index:1; }
+    .hero-kicker { font-size:11px; font-weight:800; letter-spacing:1.4px; text-transform:uppercase; color:rgba(255,255,255,0.58); margin-bottom:8px; }
+    .hero-title { font-family:'Poppins', sans-serif; font-size:32px; font-weight:900; letter-spacing:0; margin-bottom:8px; }
+    .hero-text { max-width:720px; color:rgba(255,255,255,0.72); font-size:13px; line-height:1.7; }
+    .metric-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+    .mini-metric { background:var(--off); border:1.5px solid var(--border); border-radius:12px; padding:14px; }
+    .mini-value { font-family:'Poppins', sans-serif; font-size:28px; font-weight:900; letter-spacing:0; }
+    .mini-label { font-size:11px; color:var(--muted); font-weight:700; margin-top:2px; }

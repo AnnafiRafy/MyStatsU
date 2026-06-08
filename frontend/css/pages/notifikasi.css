@@ -1,0 +1,4 @@
+.notif-item-page { cursor:pointer; }
+    .notif-item-page.unread { background:var(--red-pale); border-color:var(--red-border); }
+    .notif-dot-page { width:8px; height:8px; border-radius:50%; background:var(--muted); margin-top:13px; flex-shrink:0; }
+    .notif-item-page.unread .notif-dot-page { background:var(--red); }

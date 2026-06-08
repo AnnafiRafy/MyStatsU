@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyStatsU - Prediksi IPK</title>
+  <script src="js/auth.js" data-require-auth></script>
+  <script src="js/app-utils.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app-theme.css" />
+  <link rel="stylesheet" href="css/pages/prediksi.css" />
+</head>
+<body>
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Prediksi <em>IPK</em></h1>
+      <div class="topbar-sub">Hitung estimasi performa berdasarkan nilai dan jam belajar</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-primary" id="calculateBtn">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Hitung Prediksi
+      </button>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="stack">
+      <section class="prediction-panel">
+        <div class="prediction-label">Prediksi terbaru</div>
+        <div class="prediction-value" id="ipkPrediksi">-</div>
+        <div class="prediction-label" id="kategoriPrediksi">Belum dihitung</div>
+        <div class="prediction-text" id="hasilPrediksi">Klik Hitung Prediksi untuk membuat estimasi IPK berdasarkan data nilai dan jam belajar yang sudah tersimpan.</div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Riwayat Prediksi</div>
+            <div class="card-sub">Hasil prediksi yang pernah kamu hitung</div>
+          </div>
+        </div>
+        <div class="list" id="prediksiList"></div>
+      </section>
+    </div>
+
+    <aside class="stack">
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Parameter</div>
+            <div class="card-sub">Opsional, kosongkan untuk semua semester</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="semesterInput">Semester</label>
+          <input class="form-input" id="semesterInput" placeholder="Contoh: Genap 2024/2025" />
+        </div>
+        <button class="btn-secondary" id="clearSemester" type="button">Kosongkan Filter</button>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Sumber Data</div>
+            <div class="card-sub">Lengkapi data untuk prediksi lebih masuk akal</div>
+          </div>
+        </div>
+        <div class="stack">
+          <a class="btn-secondary" href="nilai.html">Input Nilai</a>
+          <a class="btn-secondary" href="jam-belajar.html">Catat Jam Belajar</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+  <script src="js/pages/prediksi.js"></script>
+</body>
+</html>

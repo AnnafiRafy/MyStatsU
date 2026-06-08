@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyStatsU - Insight</title>
+  <script src="js/auth.js" data-require-auth></script>
+  <script src="js/app-utils.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app-theme.css" />
+  <link rel="stylesheet" href="css/pages/insight.css" />
+</head>
+<body>
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Insight <em>Belajar</em></h1>
+      <div class="topbar-sub">Rekomendasi mingguan berdasarkan jam belajar yang kamu catat</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-primary" id="generateBtn">
+        <svg viewBox="0 0 24 24"><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>
+        Generate Insight
+      </button>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="stack">
+      <section class="hero-insight">
+        <div class="hero-kicker">Rekomendasi terbaru</div>
+        <div class="hero-title" id="latestPeriod">Memuat insight...</div>
+        <div class="hero-text" id="latestText">Data akan muncul setelah insight tersedia.</div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Riwayat Insight</div>
+            <div class="card-sub">Semua rekomendasi yang pernah dibuat</div>
+          </div>
+        </div>
+        <div class="list" id="insightList"></div>
+      </section>
+    </div>
+
+    <aside class="stack">
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Ringkasan Terakhir</div>
+            <div class="card-sub">Diambil dari insight paling baru</div>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="mini-metric">
+            <div class="mini-value" id="totalJam">0j</div>
+            <div class="mini-label">Total Mingguan</div>
+          </div>
+          <div class="mini-metric">
+            <div class="mini-value" id="rataHarian">0j</div>
+            <div class="mini-label">Rata-rata Harian</div>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Aksi Cepat</div>
+            <div class="card-sub">Perbarui data pendukung insight</div>
+          </div>
+        </div>
+        <div class="stack">
+          <a class="btn-secondary" href="jam-belajar.html">Catat Jam Belajar</a>
+          <a class="btn-secondary" href="prediksi.html">Lihat Prediksi IPK</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+  <script src="js/pages/insight.js"></script>
+</body>
+</html>

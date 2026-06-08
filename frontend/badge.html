@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyStatsU - Badge</title>
+  <script src="js/auth.js" data-require-auth></script>
+  <script src="js/app-utils.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app-theme.css" />
+  <link rel="stylesheet" href="css/pages/badge.css" />
+</head>
+<body>
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Badge <em>& Reward</em></h1>
+      <div class="topbar-sub">Pencapaian akademik yang sudah kamu dapatkan</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-primary" id="checkBtn">
+        <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+        Cek Badge Baru
+      </button>
+    </div>
+  </div>
+
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Koleksi Badge</div>
+        <div class="card-sub">Pencapaian yang sudah dan belum terbuka</div>
+      </div>
+    </div>
+    <div class="badge-grid-page" id="badgeGrid"></div>
+  </section>
+</main>
+  <script src="js/pages/badge.js"></script>
+</body>
+</html>

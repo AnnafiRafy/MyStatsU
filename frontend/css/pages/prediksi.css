@@ -1,0 +1,8 @@
+.prediction-panel { background:var(--red); border-radius:var(--rl); padding:28px; color:#fff; position:relative; overflow:hidden; }
+    .prediction-panel::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.05) 1px,transparent 1px); background-size:32px 32px; }
+    .prediction-panel > * { position:relative; z-index:1; }
+    .prediction-value { font-family:'Poppins', sans-serif; font-size:64px; font-weight:900; letter-spacing:0; line-height:1; margin:10px 0 6px; }
+    .prediction-label { font-size:12px; color:rgba(255,255,255,0.62); font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+    .prediction-text { margin-top:18px; font-size:13px; line-height:1.7; color:rgba(255,255,255,0.75); max-width:760px; }
+    .history-row { display:grid; grid-template-columns:90px 1fr auto; gap:14px; align-items:center; }
+    .ipk-chip { font-family:'Poppins', sans-serif; font-size:28px; font-weight:900; color:var(--red); }

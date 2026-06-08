@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyStatsU — Input Nilai</title>
+  <script src="js/auth.js" data-require-auth></script>
+  <script src="js/app-utils.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/pages/nilai.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="dc dc1"></div><div class="dc dc2"></div>
+  <div class="sb-brand">
+    <div class="sb-brand-name">My<span>Stats</span>U</div>
+    <div class="sb-brand-tag">Academic Tracker</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="nav-section-label">Utama</div>
+    <a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+    <a class="nav-item active" href="nilai.html"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>Input Nilai</a>
+    <a class="nav-item" href="jam-belajar.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Jam Belajar</a>
+    <div class="nav-section-label">Analitik</div>
+    <a class="nav-item" href="insight.html"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Insight</a>
+    <a class="nav-item" href="prediksi.html"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Prediksi IPK</a>
+    <div class="nav-section-label">Lainnya</div>
+    <a class="nav-item" href="badge.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>Badge & Reward</a>
+    <a class="nav-item" href="notifikasi.html"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Notifikasi<span class="nav-badge" hidden>0</span></a>
+  </nav>
+  <div style="padding:0 10px;position:relative;z-index:2;">
+    <div class="sb-user"><div class="sb-user-row"><div class="sb-avatar">A</div><div><div class="sb-user-name">Ahmad Fauzi</div><div class="sb-user-nim">103012300001</div></div></div></div>
+    <a class="nav-item" href="index.html" style="margin-top:6px;color:rgba(255,255,255,0.5);"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Keluar</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Input <em>Nilai</em></h1>
+      <div class="topbar-sub">Semester Genap 2024/2025 · 6 mata kuliah terdaftar</div>
+    </div>
+    <button class="btn-primary" onclick="openModal()">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Tambah Nilai
+    </button>
+  </div>
+
+  <!-- IPK Banner -->
+  <div class="ipk-banner">
+    <div class="ipk-dc ipk-dc1"></div>
+    <div class="ipk-dc ipk-dc2"></div>
+    <div class="ipk-main">
+      <div class="ipk-value">3.72</div>
+      <div class="ipk-label">IPK Kumulatif Saat Ini</div>
+    </div>
+    <div class="ipk-divider"></div>
+    <div class="ipk-stats">
+      <div class="ipk-stat">
+        <div class="ipk-stat-val">21</div>
+        <div class="ipk-stat-lbl">SKS Lulus</div>
+      </div>
+      <div class="ipk-divider" style="height:36px"></div>
+      <div class="ipk-stat">
+        <div class="ipk-stat-val">6</div>
+        <div class="ipk-stat-lbl">Mata Kuliah</div>
+      </div>
+      <div class="ipk-divider" style="height:36px"></div>
+      <div class="ipk-stat">
+        <div class="ipk-stat-val">3</div>
+        <div class="ipk-stat-lbl">Belum Input</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <div>
+        <div class="table-title">Daftar Nilai</div>
+        <div class="table-sub">Semester Genap 2024/2025</div>
+      </div>
+      <div class="filter-row">
+        <button type="button" class="filter-chip active" data-filter="all">Semua</button>
+        <button type="button" class="filter-chip" data-filter="done">Sudah Input</button>
+        <button type="button" class="filter-chip" data-filter="missing">Belum Input</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Mata Kuliah</th>
+          <th>SKS</th>
+          <th>Grade</th>
+          <th>Nilai Angka</th>
+          <th>Semester</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="nilaiTableBody">
+        <tr>
+          <td><div class="mk-name-cell">Pemrograman Web</div><div class="mk-sub-cell">IF-3041 · Teknik Informatika</div></td>
+          <td><span style="font-weight:700;color:var(--text)">3</span> <span style="font-size:11px;color:var(--muted)">SKS</span></td>
+          <td><span class="grade-badge grade-A">A</span></td>
+          <td>
+            <div class="nilai-bar-wrap">
+              <div class="nilai-bar"><div class="nilai-fill" style="width:95%"></div></div>
+              <div class="nilai-num">90</div>
+            </div>
+          </td>
+          <td><span style="font-size:12px;color:var(--muted)">Genap 24/25</span></td>
+          <td>
+            <button class="action-btn"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="action-btn"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+          </td>
+        </tr>
+        <tr>
+          <td><div class="mk-name-cell">Basis Data Lanjut</div><div class="mk-sub-cell">IF-3042 · Teknik Informatika</div></td>
+          <td><span style="font-weight:700;color:var(--text)">3</span> <span style="font-size:11px;color:var(--muted)">SKS</span></td>
+          <td><span class="grade-badge grade-A">A</span></td>
+          <td>
+            <div class="nilai-bar-wrap">
+              <div class="nilai-bar"><div class="nilai-fill" style="width:88%"></div></div>
+              <div class="nilai-num">85</div>
+            </div>
+          </td>
+          <td><span style="font-size:12px;color:var(--muted)">Genap 24/25</span></td>
+          <td>
+            <button class="action-btn"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="action-btn"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+          </td>
+        </tr>
+        <tr>
+          <td><div class="mk-name-cell">Jaringan Komputer</div><div class="mk-sub-cell">IF-3043 · Teknik Informatika</div></td>
+          <td><span style="font-weight:700;color:var(--text)">3</span> <span style="font-size:11px;color:var(--muted)">SKS</span></td>
+          <td><span class="grade-badge grade-B">B</span></td>
+          <td>
+            <div class="nilai-bar-wrap">
+              <div class="nilai-bar"><div class="nilai-fill" style="width:78%"></div></div>
+              <div class="nilai-num">76</div>
+            </div>
+          </td>
+          <td><span style="font-size:12px;color:var(--muted)">Genap 24/25</span></td>
+          <td>
+            <button class="action-btn"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="action-btn"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+          </td>
+        </tr>
+        <tr style="opacity:.55">
+          <td><div class="mk-name-cell">Kecerdasan Buatan</div><div class="mk-sub-cell">IF-3044 · Teknik Informatika</div></td>
+          <td><span style="font-weight:700;color:var(--text)">3</span> <span style="font-size:11px;color:var(--muted)">SKS</span></td>
+          <td>
+            <span style="font-size:11px;background:var(--off);border:1px dashed var(--border-med);border-radius:6px;padding:4px 8px;color:var(--muted);font-weight:600;">Belum</span>
+          </td>
+          <td><span style="font-size:12px;color:var(--muted)">— belum diinput</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Genap 24/25</span></td>
+          <td>
+            <button class="action-btn" onclick="openModal()" style="color:var(--red);opacity:1"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </td>
+        </tr>
+        <tr style="opacity:.55">
+          <td><div class="mk-name-cell">Pengembangan Aplikasi Mobile</div><div class="mk-sub-cell">IF-3045 · Teknik Informatika</div></td>
+          <td><span style="font-weight:700;color:var(--text)">3</span> <span style="font-size:11px;color:var(--muted)">SKS</span></td>
+          <td>
+            <span style="font-size:11px;background:var(--off);border:1px dashed var(--border-med);border-radius:6px;padding:4px 8px;color:var(--muted);font-weight:600;">Belum</span>
+          </td>
+          <td><span style="font-size:12px;color:var(--muted)">— belum diinput</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Genap 24/25</span></td>
+          <td>
+            <button class="action-btn" onclick="openModal()" style="color:var(--red);opacity:1"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </td>
+        </tr>
+        <tr style="opacity:.55">
+          <td><div class="mk-name-cell">Rekayasa Perangkat Lunak</div><div class="mk-sub-cell">IF-3046 · Teknik Informatika</div></td>
+          <td><span style="font-weight:700;color:var(--text)">3</span> <span style="font-size:11px;color:var(--muted)">SKS</span></td>
+          <td>
+            <span style="font-size:11px;background:var(--off);border:1px dashed var(--border-med);border-radius:6px;padding:4px 8px;color:var(--muted);font-weight:600;">Belum</span>
+          </td>
+          <td><span style="font-size:12px;color:var(--muted)">— belum diinput</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Genap 24/25</span></td>
+          <td>
+            <button class="action-btn" onclick="openModal()" style="color:var(--red);opacity:1"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<!-- MODAL INPUT NILAI -->
+<div class="overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title">Input Nilai</div>
+      <button class="modal-x" onclick="closeModal()">&#215;</button>
+    </div>
+    <div class="modal-sub" id="modalSub">Tambahkan nilai mata kuliah semester ini</div>
+
+    <div class="field">
+      <label>Nama Mata Kuliah</label>
+      <div class="wrap">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <select id="mk" required aria-describedby="mkError">
+          <option value="">Pilih mata kuliah</option>
+          <option>Pemrograman Web</option>
+          <option>Basis Data Lanjut</option>
+          <option>Jaringan Komputer</option>
+          <option>Kecerdasan Buatan</option>
+          <option>Pengembangan Aplikasi Mobile</option>
+          <option>Rekayasa Perangkat Lunak</option>
+          <option>Matematika Diskrit</option>
+          <option>Statistika</option>
+        </select>
+      </div>
+      <div class="field-error" id="mkError"></div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Kelas</label>
+        <div class="wrap">
+          <div class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <input type="text" id="kelas" placeholder="cth. IF-45-01" required aria-describedby="kelasError" />
+        </div>
+        <div class="field-error" id="kelasError"></div>
+      </div>
+      <div class="field">
+        <label>SKS</label>
+        <div class="wrap">
+          <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <select id="sks" required aria-describedby="sksError">
+            <option>2 SKS</option>
+            <option selected>3 SKS</option>
+            <option>4 SKS</option>
+          </select>
+        </div>
+        <div class="field-error" id="sksError"></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Semester</label>
+      <div class="wrap">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <select id="semester" required aria-describedby="semesterError">
+          <option>Ganjil 2023/2024</option>
+          <option>Genap 2023/2024</option>
+          <option selected>Genap 2024/2025</option>
+        </select>
+      </div>
+      <div class="field-error" id="semesterError"></div>
+    </div>
+
+    <div class="field">
+      <label>Grade</label>
+      <div class="grade-select-row">
+        <div class="grade-opt sel" onclick="selectGrade(this)">A<span class="grade-opt-sub">≥ 85</span></div>
+        <div class="grade-opt" onclick="selectGrade(this)">AB<span class="grade-opt-sub">≥ 80</span></div>
+        <div class="grade-opt" onclick="selectGrade(this)">B<span class="grade-opt-sub">≥ 75</span></div>
+        <div class="grade-opt" onclick="selectGrade(this)">BC<span class="grade-opt-sub">≥ 70</span></div>
+        <div class="grade-opt" onclick="selectGrade(this)">C<span class="grade-opt-sub">≥ 60</span></div>
+        <div class="grade-opt" onclick="selectGrade(this)">D<span class="grade-opt-sub">≥ 50</span></div>
+      </div>
+      <div class="field-error" id="gradeError"></div>
+    </div>
+
+    <div class="field">
+      <label>Nilai Angka</label>
+      <div class="wrap">
+        <div class="ico"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <input type="number" id="nilai" placeholder="0 - 100" min="0" max="100" required aria-describedby="nilaiError" />
+      </div>
+      <div class="field-error" id="nilaiError"></div>
+    </div>
+
+    <button class="btn-full" onclick="simpanNilai()" id="saveNilaiBtn">Simpan Nilai</button>
+  </div>
+</div>
+  <script src="js/pages/nilai.js"></script>
+</body>
+</html>

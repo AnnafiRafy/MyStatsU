@@ -1,0 +1,13 @@
+.DS_Store
+.env
+node_modules/
+backend/.env
+backend/node_modules/
+.git-empty-backup/
+.git-backend-backup/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
+dist/
+build/
