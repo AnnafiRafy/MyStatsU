@@ -6,6 +6,7 @@
   <title>MyStatsU - Prediksi IPK</title>
   <script src="js/auth.js" data-require-auth></script>
   <script src="js/app-utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/app-theme.css" />
@@ -21,7 +22,7 @@
     <div class="topbar-right">
       <button class="btn-primary" id="calculateBtn">
         <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Hitung Prediksi
+        Prediksi Sekarang
       </button>
     </div>
   </div>
@@ -29,17 +30,33 @@
   <div class="content-grid">
     <div class="stack">
       <section class="prediction-panel">
-        <div class="prediction-label">Prediksi terbaru</div>
+        <div class="prediction-topline">
+          <div class="prediction-label">Prediksi terbaru</div>
+          <span class="model-pill loading" id="modelState">Menyiapkan model</span>
+        </div>
         <div class="prediction-value" id="ipkPrediksi">-</div>
-        <div class="prediction-label" id="kategoriPrediksi">Belum dihitung</div>
-        <div class="prediction-text" id="hasilPrediksi">Klik Hitung Prediksi untuk membuat estimasi IPK berdasarkan data nilai dan jam belajar yang sudah tersimpan.</div>
+        <div class="prediction-label" id="kategoriPrediksi">Belum diprediksi</div>
+        <div class="prediction-text" id="hasilPrediksi">Model akan memakai nilai, pola jam belajar, kehadiran, dan IPK semester lalu untuk membuat estimasi.</div>
+        <div class="prediction-foot" id="predictionMeta">Neural network 2-layer · 5 fitur ternormalisasi</div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Kontribusi Fitur</div>
+            <div class="card-sub">Pengaruh lokal dihitung dengan perturbation analysis</div>
+          </div>
+        </div>
+        <div class="contribution-list" id="contributionList">
+          <div class="empty">Kontribusi fitur muncul setelah prediksi dihitung.</div>
+        </div>
       </section>
 
       <section class="card">
         <div class="card-header">
           <div>
             <div class="card-title">Riwayat Prediksi</div>
-            <div class="card-sub">Hasil prediksi yang pernah kamu hitung</div>
+            <div class="card-sub">Tersimpan lokal khusus untuk akun ini</div>
           </div>
         </div>
         <div class="list" id="prediksiList"></div>
@@ -50,15 +67,45 @@
       <section class="card">
         <div class="card-header">
           <div>
-            <div class="card-title">Parameter</div>
-            <div class="card-sub">Opsional, kosongkan untuk semua semester</div>
+            <div class="card-title">Parameter Prediksi</div>
+            <div class="card-sub">Nilai dan jam belajar dibaca otomatis</div>
           </div>
         </div>
         <div class="form-group">
           <label class="form-label" for="semesterInput">Semester</label>
-          <input class="form-input" id="semesterInput" placeholder="Contoh: Genap 2024/2025" />
+          <select class="form-input" id="semesterInput">
+            <option value="">Semua semester</option>
+          </select>
         </div>
-        <button class="btn-secondary" id="clearSemester" type="button">Kosongkan Filter</button>
+        <div class="form-group">
+          <label class="form-label" for="attendanceInput">Persentase kehadiran</label>
+          <div class="input-suffix">
+            <input class="form-input" id="attendanceInput" type="number" min="0" max="100" step="1" value="85" />
+            <span>%</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="previousGpaInput">IPK semester lalu</label>
+          <input class="form-input" id="previousGpaInput" type="number" min="0" max="4" step="0.01" value="3.00" />
+        </div>
+        <div class="form-help">Kehadiran dan IPK semester lalu disimpan di browser, bukan ke database.</div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Ringkasan Fitur</div>
+            <div class="card-sub">Data aktual yang masuk ke model</div>
+          </div>
+        </div>
+        <div class="feature-summary" id="featureSummary">
+          <div class="summary-row"><span>Jam belajar</span><strong id="studyHoursValue">0 jam/minggu</strong></div>
+          <div class="summary-row"><span>Kehadiran</span><strong id="attendanceValue">85%</strong></div>
+          <div class="summary-row"><span>Konsistensi</span><strong id="consistencyValue">0%</strong></div>
+          <div class="summary-row"><span>IPK sebelumnya</span><strong id="previousGpaValue">3.00</strong></div>
+          <div class="summary-row"><span>Rata-rata nilai</span><strong id="averageGradeValue">0</strong></div>
+        </div>
+        <div class="trend-note" id="trendNote">Belum ada pola temporal yang dapat dihitung.</div>
       </section>
 
       <section class="card">
@@ -76,6 +123,7 @@
     </aside>
   </div>
 </main>
+  <script src="js/pages/prediksi-model.js"></script>
   <script src="js/pages/prediksi.js"></script>
 </body>
 </html>

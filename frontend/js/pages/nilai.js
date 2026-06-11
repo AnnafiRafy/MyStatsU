@@ -1,20 +1,52 @@
 const session = MyStatsUAuth.requireAuth();
-  const userId = session.user.mahasiswaID || session.user.id;
+const userId = session.user.mahasiswaID || session.user.id;
 
-  const gradePoint = { A:4, AB:3.5, B:3, BC:2.5, C:2, D:1, E:0 };
-  const defaultCourses = [
-    { mata_kuliah: 'Pemrograman Web', sks: 3, semester: 'Genap 2024/2025' },
-    { mata_kuliah: 'Basis Data Lanjut', sks: 3, semester: 'Genap 2024/2025' },
-    { mata_kuliah: 'Jaringan Komputer', sks: 3, semester: 'Genap 2024/2025' },
-    { mata_kuliah: 'Kecerdasan Buatan', sks: 3, semester: 'Genap 2024/2025' },
-    { mata_kuliah: 'Pengembangan Aplikasi Mobile', sks: 3, semester: 'Genap 2024/2025' },
-    { mata_kuliah: 'Rekayasa Perangkat Lunak', sks: 3, semester: 'Genap 2024/2025' }
-  ];
-  let nilaiState = {
+const gradePoint = { A:4, AB:3.5, B:3, BC:2.5, C:2, D:1, E:0 };
+const courseCatalog = [
+  {
+    semester: 'Ganjil 2022/2023',
+    courses: [['Pendidikan Agama', 2], ['Pancasila', 2], ['Matematika Dasar', 3], ['Pengantar Teknologi Informasi', 3], ['Algoritma dan Pemrograman', 4], ['Bahasa Inggris', 2]]
+  },
+  {
+    semester: 'Genap 2022/2023',
+    courses: [['Kewarganegaraan', 2], ['Matematika Diskrit', 3], ['Struktur Data', 4], ['Sistem Digital', 3], ['Organisasi Komputer', 3], ['Bahasa Indonesia', 2]]
+  },
+  {
+    semester: 'Ganjil 2023/2024',
+    courses: [['Pemrograman Berorientasi Objek', 4], ['Basis Data', 4], ['Statistika', 3], ['Sistem Operasi', 3], ['Interaksi Manusia dan Komputer', 3], ['Kewirausahaan', 2]]
+  },
+  {
+    semester: 'Genap 2023/2024',
+    courses: [['Pemrograman Web', 4], ['Jaringan Komputer', 3], ['Rekayasa Perangkat Lunak', 3], ['Analisis dan Desain Sistem', 3], ['Metode Numerik', 3], ['Etika Profesi', 2]]
+  },
+  {
+    semester: 'Ganjil 2024/2025',
+    courses: [['Kecerdasan Buatan', 3], ['Basis Data Lanjut', 3], ['Pemrograman Mobile', 4], ['Keamanan Informasi', 3], ['Manajemen Proyek TI', 3], ['Grafika Komputer', 3]]
+  },
+  {
+    semester: 'Genap 2024/2025',
+    courses: [['Pembelajaran Mesin', 3], ['Komputasi Awan', 3], ['Pengujian Perangkat Lunak', 3], ['Internet of Things', 3], ['Data Mining', 3], ['Metodologi Penelitian', 3]]
+  },
+  {
+    semester: 'Ganjil 2025/2026',
+    courses: [['Deep Learning', 3], ['Big Data Analytics', 3], ['Arsitektur Perangkat Lunak', 3], ['Keamanan Aplikasi', 3], ['Pemrosesan Bahasa Alami', 3], ['Kerja Praktik', 3]]
+  },
+  {
+    semester: 'Genap 2025/2026',
+    courses: [['Proyek Akhir', 6], ['Sistem Pendukung Keputusan', 3], ['Audit Teknologi Informasi', 3], ['Computer Vision', 3], ['Technopreneurship', 2], ['Seminar Informatika', 2]]
+  }
+].flatMap(group => group.courses.map(([mata_kuliah, sks]) => ({
+  semester: group.semester,
+  mata_kuliah,
+  sks
+})));
+
+let nilaiState = {
     data: [],
     filter: 'all',
+    semester: 'Genap 2025/2026',
     editingId: null
-  };
+};
 
   function gradeFromNilai(nilai) {
     const angka = Number(nilai);
@@ -171,23 +203,108 @@ const session = MyStatsUAuth.requireAuth();
     return String(value || '').trim().toLowerCase();
   }
 
-  function getMissingCourses(nilaiData) {
-    const savedNames = new Set(nilaiData.map(item => normalizedName(item.mata_kuliah)));
-    return defaultCourses.filter(item => !savedNames.has(normalizedName(item.mata_kuliah)));
+  function courseIdentity(item) {
+    return `${normalizedName(item.semester)}::${normalizedName(item.mata_kuliah)}`;
+  }
+
+  function semesterOrderValue(label) {
+    const text = String(label || '');
+    const yearMatch = text.match(/(\d{4})\/(\d{4})/);
+    const startYear = yearMatch ? Number(yearMatch[1]) : 0;
+    const period = /^genap/i.test(text) ? 2 : /^ganjil/i.test(text) ? 1 : 0;
+    return (startYear * 10) + period;
+  }
+
+  function populateSemesterFilter() {
+    const select = document.getElementById('semesterFilter');
+    const semesters = [...new Set(
+      [...courseCatalog, ...nilaiState.data]
+        .map(item => String(item.semester || '').trim())
+        .filter(Boolean)
+    )].sort((a, b) => semesterOrderValue(b) - semesterOrderValue(a));
+
+    select.innerHTML = [
+      '<option value="">Semua Semester</option>',
+      ...semesters.map(semester => (
+        `<option value="${escapeHtml(semester)}">${escapeHtml(semester)}</option>`
+      ))
+    ].join('');
+
+    if (semesters.includes(nilaiState.semester)) {
+      select.value = nilaiState.semester;
+    } else {
+      nilaiState.semester = semesters[0] || '';
+      select.value = nilaiState.semester;
+    }
+  }
+
+  function populateCourseOptions() {
+    const select = document.getElementById('mk');
+    const currentValue = select.value;
+    const courseNames = [...new Set(
+      [...courseCatalog, ...nilaiState.data].map(item => item.mata_kuliah).filter(Boolean)
+    )]
+      .sort((a, b) => a.localeCompare(b, 'id'));
+
+    select.innerHTML = [
+      '<option value="">Pilih mata kuliah</option>',
+      ...courseNames.map(name => `<option>${escapeHtml(name)}</option>`)
+    ].join('');
+    if (courseNames.includes(currentValue)) select.value = currentValue;
+  }
+
+  function semesterNilaiData() {
+    if (!nilaiState.semester) return nilaiState.data;
+    return nilaiState.data.filter(item => String(item.semester || '') === nilaiState.semester);
+  }
+
+  function expectedCourses() {
+    if (!nilaiState.semester) return courseCatalog;
+    return courseCatalog.filter(item => item.semester === nilaiState.semester);
+  }
+
+  function getMissingCourses() {
+    const saved = new Set(nilaiState.data.map(courseIdentity));
+    return expectedCourses().filter(item => !saved.has(courseIdentity(item)));
   }
 
   function visibleNilaiRows() {
-    if (nilaiState.filter === 'done') return nilaiState.data;
-    if (nilaiState.filter === 'missing') return getMissingCourses(nilaiState.data).map(item => ({ ...item, missing: true }));
-    return [
-      ...nilaiState.data,
-      ...getMissingCourses(nilaiState.data).map(item => ({ ...item, missing: true }))
-    ];
+    const savedRows = semesterNilaiData();
+    const missingRows = getMissingCourses().map(item => ({ ...item, missing: true }));
+    if (nilaiState.filter === 'done') return savedRows;
+    if (nilaiState.filter === 'missing') return missingRows;
+    return [...savedRows, ...missingRows];
+  }
+
+  function renderNilaiSummary() {
+    const selectedData = semesterNilaiData();
+    const summary = hitungIpk(selectedData);
+    const missingCount = getMissingCourses().length;
+    const semesterLabel = nilaiState.semester || 'Semua Semester';
+    const sourceText = `${selectedData.length} mata kuliah`;
+
+    document.querySelector('.ipk-value').textContent = summary.ipk;
+    document.querySelector('.ipk-label').textContent =
+      nilaiState.semester ? 'Indeks Prestasi Semester' : 'IPK Kumulatif Semua Semester';
+
+    const statValues = document.querySelectorAll('.ipk-stat-val');
+    if (statValues[0]) statValues[0].textContent = summary.sks;
+    if (statValues[1]) statValues[1].textContent = selectedData.length;
+    if (statValues[2]) statValues[2].textContent = missingCount;
+
+    const topbarSub = document.querySelector('.topbar-sub');
+    if (topbarSub) topbarSub.textContent = `${semesterLabel} · ${sourceText}`;
+
+    const tableSub = document.getElementById('tableSemesterSub');
+    if (tableSub) tableSub.textContent = nilaiState.semester
+      ? `Semester ${nilaiState.semester}`
+      : `${selectedData.length} nilai dari seluruh semester`;
   }
 
   function renderNilai() {
     const tbody = document.getElementById('nilaiTableBody');
     const rows = visibleNilaiRows();
+    renderNilaiSummary();
 
     if (!rows.length) {
       tbody.innerHTML = `
@@ -206,12 +323,12 @@ const session = MyStatsUAuth.requireAuth();
           <tr style="opacity:.62">
             <td>
               <div class="mk-name-cell">${escapeHtml(item.mata_kuliah || '-')}</div>
-            <div class="mk-sub-cell">${escapeHtml(item.kelas || session.user.jurusan || 'Belum input')}</div>
+              <div class="mk-sub-cell">${escapeHtml(session.user.jurusan || 'Belum input')}</div>
             </td>
             <td><span style="font-weight:700;color:var(--text)">${escapeHtml(item.sks || 0)}</span> <span style="font-size:11px;color:var(--muted)">SKS</span></td>
             <td><span style="font-size:11px;background:var(--off);border:1px dashed var(--border-med);border-radius:6px;padding:4px 8px;color:var(--muted);font-weight:600;">Belum</span></td>
             <td><span style="font-size:12px;color:var(--muted)">belum diinput</span></td>
-            <td><span style="font-size:12px;color:var(--muted)">${escapeHtml(item.semester || 'Input manual')}</span></td>
+            <td><span style="font-size:12px;color:var(--muted)">${escapeHtml(item.semester || '-')}</span></td>
             <td>
               <button class="action-btn" onclick='openModalForCourse(${JSON.stringify(item.mata_kuliah || '')}, ${Number(item.sks) || 3}, ${JSON.stringify(item.semester || '')})' style="color:var(--red);opacity:1" title="Input nilai">
                 <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -254,23 +371,15 @@ const session = MyStatsUAuth.requireAuth();
       const nilaiData = await apiJson(`/api/nilai/${userId}`);
       if (!nilaiData) return;
       nilaiState.data = Array.isArray(nilaiData) ? nilaiData : [];
-
-      const summary = hitungIpk(nilaiState.data);
-      document.querySelector('.ipk-value').textContent = summary.ipk;
-
-      const missingCount = getMissingCourses(nilaiState.data).length;
-      const statValues = document.querySelectorAll('.ipk-stat-val');
-      if (statValues[0]) statValues[0].textContent = summary.sks;
-      if (statValues[1]) statValues[1].textContent = nilaiState.data.length;
-      if (statValues[2]) statValues[2].textContent = missingCount;
-
-      const topbarSub = document.querySelector('.topbar-sub');
-      if (topbarSub) topbarSub.textContent = `Semester Genap 2024/2025 · ${nilaiState.data.length} mata kuliah sudah diinput`;
-
+      populateCourseOptions();
+      populateSemesterFilter();
       renderNilai();
     } catch(error) {
       console.log(error);
-      showToast('Gagal memuat data nilai', 'error');
+      nilaiState.data = [];
+      populateSemesterFilter();
+      renderNilai();
+      showToast('Gagal memuat data nilai dari database.', 'error');
     }
   }
 
@@ -283,7 +392,7 @@ const session = MyStatsUAuth.requireAuth();
     document.getElementById("kelas").value = "";
     document.getElementById("nilai").value = "";
     document.getElementById("sks").value = "3 SKS";
-    document.getElementById("semester").value = "Genap 2024/2025";
+    document.getElementById("semester").value = nilaiState.semester || "Genap 2025/2026";
     document.querySelectorAll('.grade-opt').forEach(o=>o.classList.remove('sel'));
     const firstGrade = document.querySelector('.grade-opt');
     if (firstGrade) firstGrade.classList.add('sel');
@@ -295,11 +404,11 @@ const session = MyStatsUAuth.requireAuth();
     document.getElementById('modalOverlay').classList.add('show');
   }
 
-  function openModalForCourse(mataKuliah, sks = 3, semester = 'Genap 2024/2025') {
+  function openModalForCourse(mataKuliah, sks = 3, semester = 'Genap 2025/2026') {
     openModal();
     document.getElementById("mk").value = mataKuliah;
     document.getElementById("sks").value = `${sks} SKS`;
-    if (semester) document.getElementById("semester").value = semester;
+    document.getElementById("semester").value = semester;
   }
 
   function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
@@ -362,7 +471,7 @@ const session = MyStatsUAuth.requireAuth();
     document.getElementById("mk").value = item.mata_kuliah || "";
     document.getElementById("kelas").value = item.kelas || "";
     document.getElementById("sks").value = `${Number(item.sks) || 3} SKS`;
-    document.getElementById("semester").value = item.semester || "Genap 2024/2025";
+    document.getElementById("semester").value = item.semester || "Genap 2025/2026";
     document.getElementById("nilai").value = item.nilai_angka ?? "";
     clearNilaiValidation();
 
@@ -470,6 +579,11 @@ const session = MyStatsUAuth.requireAuth();
     });
   });
 
+  document.getElementById('semesterFilter').addEventListener('change', event => {
+    nilaiState.semester = event.target.value;
+    renderNilai();
+  });
+
   ['mk', 'kelas', 'sks', 'semester', 'nilai'].forEach(fieldId => {
     const field = document.getElementById(fieldId);
     if (!field) return;
@@ -478,4 +592,5 @@ const session = MyStatsUAuth.requireAuth();
   });
 
   MyStatsU.syncNotificationBadge();
+  populateCourseOptions();
   loadNilai();

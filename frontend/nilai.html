@@ -42,7 +42,7 @@
   <div class="topbar">
     <div class="topbar-left">
       <h1>Input <em>Nilai</em></h1>
-      <div class="topbar-sub">Semester Genap 2024/2025 · 6 mata kuliah terdaftar</div>
+      <div class="topbar-sub">Semester Genap 2025/2026 · memuat data nilai...</div>
     </div>
     <button class="btn-primary" onclick="openModal()">
       <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -82,12 +82,18 @@
     <div class="table-header">
       <div>
         <div class="table-title">Daftar Nilai</div>
-        <div class="table-sub">Semester Genap 2024/2025</div>
+        <div class="table-sub" id="tableSemesterSub">Semester Genap 2025/2026</div>
       </div>
-      <div class="filter-row">
-        <button type="button" class="filter-chip active" data-filter="all">Semua</button>
-        <button type="button" class="filter-chip" data-filter="done">Sudah Input</button>
-        <button type="button" class="filter-chip" data-filter="missing">Belum Input</button>
+      <div class="table-controls">
+        <label class="semester-filter-label" for="semesterFilter">Lihat semester</label>
+        <select class="semester-filter" id="semesterFilter">
+          <option value="">Semua Semester</option>
+        </select>
+        <div class="filter-row">
+          <button type="button" class="filter-chip active" data-filter="all">Semua</button>
+          <button type="button" class="filter-chip" data-filter="done">Sudah Input</button>
+          <button type="button" class="filter-chip" data-filter="missing">Belum Input</button>
+        </div>
       </div>
     </div>
     <table>
@@ -247,9 +253,14 @@
       <div class="wrap">
         <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
         <select id="semester" required aria-describedby="semesterError">
+          <option>Ganjil 2022/2023</option>
+          <option>Genap 2022/2023</option>
           <option>Ganjil 2023/2024</option>
           <option>Genap 2023/2024</option>
-          <option selected>Genap 2024/2025</option>
+          <option>Ganjil 2024/2025</option>
+          <option>Genap 2024/2025</option>
+          <option>Ganjil 2025/2026</option>
+          <option selected>Genap 2025/2026</option>
         </select>
       </div>
       <div class="field-error" id="semesterError"></div>

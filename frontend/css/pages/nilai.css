@@ -81,10 +81,13 @@
     .table-title { font-family:'Poppins', sans-serif; font-size:17px; font-weight:900; letter-spacing:-.3px; }
     .table-sub { font-size:12px; color:var(--muted); margin-top:1px; }
 
+    .table-controls { display:flex; align-items:center; justify-content:flex-end; gap:10px; flex-wrap:wrap; }
+    .semester-filter-label { font-size:10px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.7px; }
+    .semester-filter { min-width:190px; background:var(--off); border:1.5px solid var(--border); border-radius:8px; padding:7px 30px 7px 11px; font-family:'Poppins', sans-serif; font-size:11px; font-weight:700; color:var(--soft); outline:none; cursor:pointer; }
+    .semester-filter:focus { border-color:var(--red); background:var(--white); }
     .filter-row { display:flex; gap:6px; }
     .filter-chip { background:var(--off); border:1.5px solid var(--border); border-radius:8px; padding:6px 13px; font-family:'Poppins', sans-serif; font-size:11px; font-weight:700; color:var(--muted); cursor:pointer; transition:all .15s; }
     .filter-chip.active, .filter-chip:hover { border-color:var(--red); color:var(--red); background:var(--red-pale); }
-
     table { width:100%; border-collapse:collapse; }
     thead th { padding:11px 16px; text-align:left; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); background:var(--off); border-bottom:1px solid var(--border); }
     tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
@@ -278,6 +281,9 @@
     @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
 
     @media (max-width: 700px) {
+      .table-header { align-items:flex-start; flex-direction:column; gap:14px; }
+      .table-controls { width:100%; justify-content:flex-start; }
+      .semester-filter { flex:1; min-width:170px; }
       .toast-stack { left:16px; right:16px; top:16px; }
       .app-toast { width:100%; }
       .confirm-actions { flex-direction:column-reverse; }
