@@ -1,5 +1,11 @@
-# MyStatsU
+# Anggota Kelompok
+Kavka Yuza Gazetta                              103012400339
+Annafi Rafy Kurnia Nurhakim                     103012400352
+Rafa Khayzura Erlano Putra                      103012400269
+I Made Ranadi Wijaya                            103012400390
+Felly Adhiansyah Putra Nababan                  103012400129
 
+# MyStatsU
 MyStatsU adalah aplikasi web untuk memantau performa akademik mahasiswa. Aplikasi ini menyediakan pencatatan nilai, jam belajar, insight akademik, prediksi IPK, badge, notifikasi, serta halaman admin untuk mengelola mahasiswa.
 
 ## Fitur Utama
