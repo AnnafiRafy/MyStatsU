@@ -15,6 +15,8 @@
       --muted:      #AAAAAA;
       --success:    #16A34A;
       --suc-bg:     #F0FDF4;
+      --err:        #DC2626;
+      --err-bg:     #FEF2F2;
       --r:          12px;
       --rl:         18px;
       --sidebar-w:  240px;
@@ -626,6 +628,10 @@
       color: var(--white);
       border-color: var(--red-dark);
     }
+    .admin-action:disabled {
+      cursor: not-allowed;
+      opacity: .65;
+    }
     .admin-list {
       display: flex;
       flex-direction: column;
@@ -679,6 +685,277 @@
     .broadcast-form select:focus,
     .broadcast-form textarea:focus {
       border-color: var(--red);
+      box-shadow: 0 0 0 3px var(--red-alpha);
+    }
+    .broadcast-submit {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .broadcast-submit svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    body.broadcast-dialog-open { overflow: hidden; }
+    .broadcast-confirm-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 210;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(17,17,17,.38);
+      backdrop-filter: blur(8px);
+    }
+    .broadcast-confirm-overlay.show { display: flex; }
+    .broadcast-confirm-dialog {
+      width: min(480px, 100%);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      padding: 26px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.2);
+      animation: broadcastDialogIn .22s ease both;
+    }
+    .broadcast-dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .broadcast-dialog-icon {
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      color: var(--red);
+      background: var(--red-pale);
+      border: 1px solid var(--red-border);
+    }
+    .broadcast-dialog-icon svg,
+    .broadcast-dialog-close svg,
+    .broadcast-dialog-btn svg,
+    .broadcast-dialog-note svg {
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .broadcast-dialog-icon svg { width: 22px; height: 22px; stroke-width: 2; }
+    .broadcast-dialog-close {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      background: var(--off);
+      cursor: pointer;
+      transition: color .15s, border-color .15s, background .15s;
+    }
+    .broadcast-dialog-close:hover {
+      color: var(--red);
+      border-color: var(--red-border);
+      background: var(--red-pale);
+    }
+    .broadcast-dialog-close svg { width: 16px; height: 16px; stroke-width: 2.2; }
+    .broadcast-confirm-dialog h2 {
+      font-size: 20px;
+      line-height: 1.3;
+      font-weight: 900;
+      letter-spacing: 0;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .broadcast-dialog-sub {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .broadcast-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .broadcast-summary-item span,
+    .broadcast-preview > span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+    .broadcast-summary-item strong {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .broadcast-preview {
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--off);
+    }
+    .broadcast-preview p {
+      max-height: 130px;
+      overflow-y: auto;
+      color: var(--soft);
+      font-size: 13px;
+      line-height: 1.65;
+      font-weight: 600;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .broadcast-dialog-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+    .broadcast-dialog-note svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+      margin-top: 1px;
+      stroke-width: 2;
+    }
+    .broadcast-dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 22px;
+    }
+    .broadcast-dialog-btn {
+      min-height: 40px;
+      padding: 9px 16px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .1s, background .15s, border-color .15s, box-shadow .15s;
+    }
+    .broadcast-dialog-btn:hover { transform: translateY(-1px); }
+    .broadcast-dialog-btn.secondary {
+      color: var(--soft);
+      background: var(--white);
+    }
+    .broadcast-dialog-btn.secondary:hover {
+      color: var(--text);
+      border-color: var(--border-med);
+      background: var(--off);
+    }
+    .broadcast-dialog-btn.primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 148px;
+      color: var(--white);
+      border-color: var(--red-dark);
+      background: var(--red);
+    }
+    .broadcast-dialog-btn.primary:hover {
+      background: var(--red-dark);
+      box-shadow: 0 8px 20px rgba(204,0,0,.22);
+    }
+    .broadcast-dialog-btn.primary:disabled {
+      cursor: wait;
+      opacity: .7;
+      transform: none;
+      box-shadow: none;
+    }
+    .broadcast-dialog-btn svg { width: 15px; height: 15px; stroke-width: 2; }
+    .broadcast-dialog-btn.loading svg { animation: broadcastSendPulse .7s ease infinite alternate; }
+
+    .admin-toast-stack {
+      position: fixed;
+      z-index: 230;
+      top: 24px;
+      right: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .admin-toast {
+      width: min(370px, calc(100vw - 32px));
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--success);
+      border-radius: 12px;
+      background: var(--white);
+      box-shadow: 0 18px 46px rgba(0,0,0,.15);
+      animation: adminToastIn .24s ease both;
+    }
+    .admin-toast.error { border-left-color: var(--err); }
+    .admin-toast.leaving { animation: adminToastOut .2s ease forwards; }
+    .admin-toast-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      border-radius: 8px;
+      color: var(--success);
+      background: var(--suc-bg);
+    }
+    .admin-toast.error .admin-toast-icon {
+      color: var(--err);
+      background: var(--err-bg);
+    }
+    .admin-toast-icon svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .admin-toast-title {
+      margin-bottom: 2px;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .admin-toast-message {
+      color: var(--soft);
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 500;
     }
     .admin-empty {
       color: var(--muted);
@@ -689,6 +966,10 @@
     }
 
     @keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: none; } }
+    @keyframes broadcastDialogIn { from { opacity:0; transform:translateY(12px) scale(.98); } to { opacity:1; transform:none; } }
+    @keyframes broadcastSendPulse { from { transform:translate(0, 0); } to { transform:translate(2px, -2px); } }
+    @keyframes adminToastIn { from { opacity:0; transform:translateY(-8px) scale(.98); } to { opacity:1; transform:none; } }
+    @keyframes adminToastOut { to { opacity:0; transform:translateY(-8px) scale(.98); } }
 
     @media (max-width: 1100px) {
       .stat-grid { grid-template-columns: 1fr 1fr; }
@@ -699,4 +980,10 @@
     @media (max-width: 768px) {
       .sidebar { transform: translateX(-100%); }
       .main { margin-left: 0; padding: 20px 16px; }
+      .broadcast-confirm-overlay { padding: 14px; }
+      .broadcast-confirm-dialog { padding: 22px 18px; }
+      .broadcast-dialog-actions { flex-direction: column-reverse; }
+      .broadcast-dialog-btn { width: 100%; }
+      .admin-toast-stack { top: 16px; left: 16px; right: 16px; }
+      .admin-toast { width: 100%; }
     }

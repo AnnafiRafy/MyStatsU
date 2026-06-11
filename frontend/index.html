@@ -79,7 +79,7 @@
         <label>Email</label>
         <div class="wrap">
           <div class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg></div>
-          <input type="email" id="loginEmail" placeholder="email@student.telkomuniversity.ac.id" />
+          <input type="email" id="loginEmail" placeholder="Masukkan email akun" />
         </div>
       </div>
 
@@ -98,10 +98,6 @@
         <span class="btxt">Masuk</span>
         <span class="spinner"></span>
       </button>
-
-      <div class="admin-link">
-        Login sebagai <a onclick="openModal()">Admin</a>
-      </div>
     </div>
 
     <!-- ── REGISTER ── -->
@@ -173,60 +169,6 @@
   </div>
 </div>
 
-<!-- ════════════ ADMIN MODAL ════════════ -->
-<div class="overlay" id="adminOverlay">
-  <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-title">Login Admin</div>
-      <button class="modal-x" onclick="closeModal()">&#215;</button>
-    </div>
-
-    <div class="admin-badge">
-      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Akses Khusus Admin
-    </div>
-
-    <div class="alert" id="adminAlertBox">
-      <div class="adot" id="adminAlertDot"></div>
-      <span id="adminAlertMsg"></span>
-    </div>
-
-    <div class="field">
-      <label>Email Admin</label>
-      <div class="wrap">
-        <div class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg></div>
-        <input type="email" id="adminEmail" placeholder="admin@tubes.ac.id" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Password</label>
-      <div class="wrap">
-        <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-        <input type="password" id="adminPass" placeholder="Password admin" />
-        <button class="eye" onclick="togglePass('adminPass',this)" data-s="0">
-          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <button class="btn" id="adminBtn" onclick="doAdminLogin()">
-      <span class="btxt">Masuk sebagai Admin</span>
-      <span class="spinner"></span>
-    </button>
-  </div>
-</div>
-
-<!-- ════════════ DASHBOARD ════════════ -->
-<div class="dashboard" id="dashboard">
-  <div class="dash-icon">
-    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-  </div>
-  <h2>Halo, <span id="dashName">...</span>!</h2>
-  <p>Login berhasil. Dashboard MyStatsU sedang dalam pengembangan. Fitur IPK, Jam Belajar, Insight, dan Badge akan segera hadir.</p>
-  <div class="role-tag" id="dashRole"></div>
-  <button class="logout-btn" onclick="doLogout()">Keluar</button>
-</div>
   <script src="js/pages/index.js"></script>
 </body>
 </html>

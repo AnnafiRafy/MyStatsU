@@ -125,7 +125,14 @@ Backend Express juga melayani file frontend dari folder `frontend/`, sehingga ha
 3. Masukkan data nilai dan jam belajar melalui halaman yang tersedia.
 4. Pantau ringkasan akademik pada dashboard.
 5. Gunakan halaman prediksi, insight, badge, dan notifikasi untuk melihat perkembangan akademik.
-6. Admin dapat login melalui endpoint atau halaman admin yang tersedia, lalu mengelola data mahasiswa.
+6. Admin login dari formulir masuk yang sama menggunakan akun khusus, lalu mengelola data mahasiswa.
+
+Akun admin tetap:
+
+```text
+Email: admin@tubes.ac.id
+Password: admin123
+```
 
 ## Endpoint API
 
@@ -138,8 +145,7 @@ Semua endpoint API menggunakan prefix:
 Route utama:
 
 - `POST /api/auth/register` - registrasi mahasiswa
-- `POST /api/auth/login` - login mahasiswa
-- `POST /api/auth/admin/login` - login admin
+- `POST /api/auth/login` - login mahasiswa atau admin berdasarkan akun
 - `GET /api/auth/me` - mengambil profil user login
 - `/api/nilai` - data nilai
 - `/api/jam` - data jam belajar

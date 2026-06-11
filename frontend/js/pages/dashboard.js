@@ -5,6 +5,7 @@ const userId = session.user.mahasiswaID || session.user.id;
 const gradePoint = { A:4, AB:3.5, B:3, BC:2.5, C:2, D:1, E:0 };
 const chartState = { nilaiData: [], chartType: 'ipk' };
 const dayLabels = ['SEN','SEL','RAB','KAM','JUM','SAB','MIN'];
+const adminState = { totalMahasiswa: 0, pendingBroadcast: null };
 
 function escapeHtml(value) {
     return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -30,6 +31,131 @@ function formatGpa(value) {
 
 function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
+}
+
+function ensureAdminFeedbackUi() {
+    if (!document.getElementById('adminToastStack')) {
+        document.body.insertAdjacentHTML('beforeend', `
+          <div class="admin-toast-stack" id="adminToastStack" aria-live="polite" aria-atomic="true"></div>
+        `);
+    }
+
+    if (document.getElementById('broadcastConfirmOverlay')) return;
+
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="broadcast-confirm-overlay" id="broadcastConfirmOverlay" aria-hidden="true">
+        <section class="broadcast-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="broadcastConfirmTitle">
+          <div class="broadcast-dialog-header">
+            <div class="broadcast-dialog-icon">
+              <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            </div>
+            <button class="broadcast-dialog-close" id="broadcastDialogClose" type="button" aria-label="Tutup dialog">
+              <svg viewBox="0 0 24 24"><path d="m18 6-12 12"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+
+          <h2 id="broadcastConfirmTitle">Kirim broadcast?</h2>
+          <p class="broadcast-dialog-sub">Periksa kembali pesan sebelum dikirim ke seluruh mahasiswa.</p>
+
+          <div class="broadcast-summary">
+            <div class="broadcast-summary-item">
+              <span>Kategori</span>
+              <strong id="broadcastConfirmType">Motivasi</strong>
+            </div>
+            <div class="broadcast-summary-item">
+              <span>Penerima</span>
+              <strong id="broadcastConfirmRecipients">0 mahasiswa</strong>
+            </div>
+          </div>
+
+          <div class="broadcast-preview">
+            <span>Isi pesan</span>
+            <p id="broadcastConfirmMessage"></p>
+          </div>
+
+          <div class="broadcast-dialog-note">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            Notifikasi akan langsung masuk ke akun seluruh mahasiswa.
+          </div>
+
+          <div class="broadcast-dialog-actions">
+            <button class="broadcast-dialog-btn secondary" id="broadcastDialogCancel" type="button">Batal</button>
+            <button class="broadcast-dialog-btn primary" id="broadcastDialogConfirm" type="button">
+              <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              <span>Kirim Sekarang</span>
+            </button>
+          </div>
+        </section>
+      </div>
+    `);
+
+    const overlay = document.getElementById('broadcastConfirmOverlay');
+    document.getElementById('broadcastDialogClose').addEventListener('click', closeBroadcastDialog);
+    document.getElementById('broadcastDialogCancel').addEventListener('click', closeBroadcastDialog);
+    document.getElementById('broadcastDialogConfirm').addEventListener('click', submitConfirmedBroadcast);
+    overlay.addEventListener('click', (event) => {
+        if (event.target === overlay) closeBroadcastDialog();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && overlay.classList.contains('show')) closeBroadcastDialog();
+    });
+}
+
+function showAdminToast(message, type = 'success', title) {
+    ensureAdminFeedbackUi();
+    const stack = document.getElementById('adminToastStack');
+    const toast = document.createElement('div');
+    const icon = type === 'success'
+        ? '<path d="M20 6 9 17l-5-5"/>'
+        : '<circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>';
+
+    toast.className = `admin-toast ${type}`;
+    toast.innerHTML = `
+      <div class="admin-toast-icon"><svg viewBox="0 0 24 24">${icon}</svg></div>
+      <div>
+        <div class="admin-toast-title">${escapeHtml(title || (type === 'success' ? 'Broadcast terkirim' : 'Broadcast gagal'))}</div>
+        <div class="admin-toast-message">${escapeHtml(message)}</div>
+      </div>
+    `;
+    stack.appendChild(toast);
+
+    window.setTimeout(() => {
+        toast.classList.add('leaving');
+        toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    }, 3200);
+}
+
+function openBroadcastDialog(pesan, tipe) {
+    ensureAdminFeedbackUi();
+    const labels = {
+        motivasi: 'Motivasi',
+        info: 'Informasi',
+        peringatan: 'Peringatan',
+        pencapaian: 'Pencapaian'
+    };
+
+    adminState.pendingBroadcast = { pesan, tipe };
+    document.getElementById('broadcastConfirmType').textContent = labels[tipe] || 'Informasi';
+    document.getElementById('broadcastConfirmRecipients').textContent = `${adminState.totalMahasiswa} mahasiswa`;
+    document.getElementById('broadcastConfirmMessage').textContent = pesan;
+
+    const overlay = document.getElementById('broadcastConfirmOverlay');
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('broadcast-dialog-open');
+    document.getElementById('broadcastDialogCancel').focus();
+}
+
+function closeBroadcastDialog() {
+    const overlay = document.getElementById('broadcastConfirmOverlay');
+    const confirmButton = document.getElementById('broadcastDialogConfirm');
+    if (!overlay || confirmButton?.disabled) return;
+
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('broadcast-dialog-open');
+    adminState.pendingBroadcast = null;
+    document.getElementById('broadcastMessage')?.focus();
 }
 
 function setAdminShell() {
@@ -132,12 +258,17 @@ function setAdminShell() {
                 <option value="pencapaian">Pencapaian</option>
               </select>
               <textarea id="broadcastMessage" placeholder="Tulis pesan untuk semua mahasiswa..."></textarea>
-              <button class="admin-action primary" type="submit">Kirim Broadcast</button>
+              <button class="admin-action primary broadcast-submit" type="submit">
+                <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                Kirim Broadcast
+              </button>
             </form>
           </section>
         </aside>
       </div>
     `;
+
+    ensureAdminFeedbackUi();
 
     const dateSub = document.getElementById('adminDate');
     if (dateSub) {
@@ -188,8 +319,9 @@ async function loadAdminDashboard() {
         const stats = statsPayload.data || {};
         const mahasiswa = Array.isArray(mahasiswaPayload.data) ? mahasiswaPayload.data : [];
         const pending = mahasiswa.filter(item => !item.isVerified);
+        adminState.totalMahasiswa = Number(stats.totalMahasiswa ?? mahasiswa.length) || 0;
 
-        document.getElementById('adminTotalMahasiswa').textContent = stats.totalMahasiswa ?? mahasiswa.length;
+        document.getElementById('adminTotalMahasiswa').textContent = adminState.totalMahasiswa;
         document.getElementById('adminVerified').textContent = stats.terverifikasi ?? mahasiswa.filter(item => item.isVerified).length;
         document.getElementById('adminPending').textContent = stats.belumVerifikasi ?? pending.length;
         document.getElementById('adminTotalNilai').textContent = stats.totalNilai ?? 0;
@@ -285,22 +417,46 @@ async function sendBroadcast(event) {
     const tipe = document.getElementById('broadcastType')?.value || 'motivasi';
 
     if (!pesan) {
-        alert('Pesan broadcast wajib diisi');
+        showAdminToast('Tulis isi pesan sebelum membuka konfirmasi.', 'error', 'Pesan masih kosong');
+        document.getElementById('broadcastMessage')?.focus();
         return;
     }
+
+    openBroadcastDialog(pesan, tipe);
+}
+
+async function submitConfirmedBroadcast() {
+    const broadcast = adminState.pendingBroadcast;
+    if (!broadcast) return;
+
+    const confirmButton = document.getElementById('broadcastDialogConfirm');
+    const confirmLabel = confirmButton.querySelector('span');
+    confirmButton.disabled = true;
+    confirmButton.classList.add('loading');
+    confirmLabel.textContent = 'Mengirim...';
 
     try {
         const response = await fetch('/api/admin/notifikasi/broadcast', {
             method: 'POST',
             headers: MyStatsUAuth.authHeaders({ 'Content-Type': 'application/json' }),
-            body: JSON.stringify({ pesan, tipe })
+            body: JSON.stringify(broadcast)
         });
         const payload = await response.json().catch(() => null);
         if (!response.ok) throw new Error((payload && payload.message) || 'Gagal mengirim broadcast');
+
+        const overlay = document.getElementById('broadcastConfirmOverlay');
+        overlay.classList.remove('show');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('broadcast-dialog-open');
+        adminState.pendingBroadcast = null;
         document.getElementById('broadcastMessage').value = '';
-        alert((payload && payload.message) || 'Broadcast terkirim');
+        showAdminToast((payload && payload.message) || 'Notifikasi berhasil dikirim ke seluruh mahasiswa.');
     } catch (error) {
-        alert(error.message || 'Gagal mengirim broadcast');
+        showAdminToast(error.message || 'Gagal mengirim broadcast', 'error');
+    } finally {
+        confirmButton.disabled = false;
+        confirmButton.classList.remove('loading');
+        confirmLabel.textContent = 'Kirim Sekarang';
     }
 }
 

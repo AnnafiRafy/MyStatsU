@@ -30,10 +30,7 @@ const API = '/api';
   }
 
   function hideAlert() {
-    ['alertBox','adminAlertBox'].forEach(id => {
-      const el = document.getElementById(id);
-      if(el) el.classList.remove('show');
-    });
+    document.getElementById('alertBox').classList.remove('show');
   }
 
   /* ── loading ── */
@@ -41,18 +38,6 @@ const API = '/api';
     const b = document.getElementById(id);
     b.classList.toggle('loading', on);
     b.disabled = on;
-  }
-
-  /* ── modal ── */
-  function openModal()  { document.getElementById('adminOverlay').classList.add('show'); }
-  function closeModal() { document.getElementById('adminOverlay').classList.remove('show'); document.getElementById('adminAlertBox').classList.remove('show'); }
-  document.getElementById('adminOverlay').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
-
-  /* ── dashboard ── */
-  function showDash(name, role) {
-    document.getElementById('dashName').textContent = name;
-    document.getElementById('dashRole').textContent = 'Role: ' + role;
-    document.getElementById('dashboard').classList.add('show');
   }
 
   /* ── login ── */
@@ -89,36 +74,12 @@ const API = '/api';
     finally { setLoad('regBtn',false); }
   }
 
-  /* ── admin login ── */
-  async function doAdminLogin() {
-    document.getElementById('adminAlertBox').classList.remove('show');
-    const email=document.getElementById('adminEmail').value.trim(), pass=document.getElementById('adminPass').value;
-    if (!email||!pass) return showAlert('Email dan password wajib diisi','error','adminAlertBox','adminAlertDot','adminAlertMsg');
-    setLoad('adminBtn',true);
-    try {
-      const res=await fetch(`${API}/auth/admin/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
-      const data=await res.json();
-      if (data.success) { localStorage.setItem('token',data.token); localStorage.setItem('user',JSON.stringify(data.data)); window.location.href='dashboard.html'; }
-      else showAlert(data.message||'Login gagal','error','adminAlertBox','adminAlertDot','adminAlertMsg');
-    } catch { showAlert('Tidak bisa terhubung ke server','error','adminAlertBox','adminAlertDot','adminAlertMsg'); }
-    finally { setLoad('adminBtn',false); }
-  }
-
-  /* ── logout ── */
-  function doLogout() {
-    localStorage.removeItem('token'); localStorage.removeItem('user');
-    document.getElementById('dashboard').classList.remove('show');
-    document.getElementById('loginEmail').value='';
-    document.getElementById('loginPass').value='';
-  }
-
   /* ── restore session ── */
   const su=localStorage.getItem('user');
   if (su&&localStorage.getItem('token')) {
     try {
-      const u=JSON.parse(su);
-      if (u.mahasiswaID) window.location.replace('dashboard.html');
-      else showDash(u.nama,u.adminID?'Administrator':'Mahasiswa');
+      JSON.parse(su);
+      window.location.replace('dashboard.html');
     } catch {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -128,7 +89,6 @@ const API = '/api';
   /* ── enter key ── */
   document.addEventListener('keydown', e => {
     if (e.key!=='Enter') return;
-    if (document.getElementById('adminOverlay').classList.contains('show')) doAdminLogin();
-    else if (document.getElementById('secLogin').classList.contains('active')) doLogin();
+    if (document.getElementById('secLogin').classList.contains('active')) doLogin();
     else doRegister();
   });

@@ -3,20 +3,28 @@ const bcrypt  = require('bcryptjs');
 const jwt     = require('jsonwebtoken');
 const { Mahasiswa, Admin } = require('../models');
 const { JWT_EXPIRES, ensureJwtSecret } = require('../config/jwt');
+const defaultAdmin = require('../config/defaultAdmin');
 
 const signToken = (payload) =>
   jwt.sign(payload, ensureJwtSecret(), { expiresIn: JWT_EXPIRES });
+
+const normalizeEmail = (email) => String(email || '').trim().toLowerCase();
 
 // ── POST /api/auth/register ────────────────────────────────────────────────────
 exports.registerMahasiswa = async (req, res) => {
   try {
     const { nama, email, password, nim, jurusan } = req.body;
+    const normalizedEmail = normalizeEmail(email);
 
     if (!nama || !email || !password || !nim) {
       return res.status(400).json({ success: false, message: 'Nama, email, password, dan NIM wajib diisi' });
     }
 
-    const emailExist = await Mahasiswa.findOne({ where: { email } });
+    if (normalizedEmail === defaultAdmin.email) {
+      return res.status(409).json({ success: false, message: 'Email tidak dapat digunakan untuk registrasi' });
+    }
+
+    const emailExist = await Mahasiswa.findOne({ where: { email: normalizedEmail } });
     if (emailExist) {
       return res.status(409).json({ success: false, message: 'Email sudah terdaftar' });
     }
@@ -30,7 +38,7 @@ exports.registerMahasiswa = async (req, res) => {
 
     const mahasiswa = await Mahasiswa.create({
       nama,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
       nim,
       jurusan: jurusan || null,
@@ -54,16 +62,51 @@ exports.registerMahasiswa = async (req, res) => {
   }
 };
 
+const loginAdmin = async (password, res) => {
+  const admin = await Admin.findOne({ where: { email: defaultAdmin.email } });
+  if (!admin) {
+    return res.status(401).json({ success: false, message: 'Email atau password salah' });
+  }
+
+  const isMatch = await bcrypt.compare(password, admin.password);
+  if (!isMatch) {
+    return res.status(401).json({ success: false, message: 'Email atau password salah' });
+  }
+
+  const token = signToken({
+    id: admin.adminID,
+    email: admin.email,
+    role: 'admin',
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: 'Login berhasil',
+    token,
+    data: {
+      adminID: admin.adminID,
+      nama: admin.nama,
+      email: admin.email,
+      role: 'admin',
+    },
+  });
+};
+
 // ── POST /api/auth/login ───────────────────────────────────────────────────────
-exports.loginMahasiswa = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const normalizedEmail = normalizeEmail(email);
 
     if (!email || !password) {
       return res.status(400).json({ success: false, message: 'Email dan password wajib diisi' });
     }
 
-    const mahasiswa = await Mahasiswa.findOne({ where: { email } });
+    if (normalizedEmail === defaultAdmin.email) {
+      return await loginAdmin(password, res);
+    }
+
+    const mahasiswa = await Mahasiswa.findOne({ where: { email: normalizedEmail } });
     if (!mahasiswa) {
       return res.status(401).json({ success: false, message: 'Email atau password salah' });
     }
@@ -97,49 +140,7 @@ exports.loginMahasiswa = async (req, res) => {
       },
     });
   } catch (err) {
-    console.error('loginMahasiswa error:', err);
-    return res.status(500).json({ success: false, message: 'Terjadi kesalahan server' });
-  }
-};
-
-// ── POST /api/auth/admin/login ─────────────────────────────────────────────────
-exports.loginAdmin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ success: false, message: 'Email dan password wajib diisi' });
-    }
-
-    const admin = await Admin.findOne({ where: { email } });
-    if (!admin) {
-      return res.status(401).json({ success: false, message: 'Email atau password salah' });
-    }
-
-    const isMatch = await bcrypt.compare(password, admin.password);
-    if (!isMatch) {
-      return res.status(401).json({ success: false, message: 'Email atau password salah' });
-    }
-
-    const token = signToken({
-      id: admin.adminID,
-      email: admin.email,
-      role: 'admin',
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: 'Login admin berhasil',
-      token,
-      data: {
-        adminID: admin.adminID,
-        nama: admin.nama,
-        email: admin.email,
-        role: 'admin',
-      },
-    });
-  } catch (err) {
-    console.error('loginAdmin error:', err);
+    console.error('login error:', err);
     return res.status(500).json({ success: false, message: 'Terjadi kesalahan server' });
   }
 };

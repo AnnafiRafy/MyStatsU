@@ -1,10 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const bcrypt = require("bcryptjs");
 
 require("dotenv").config();
 
 const sequelize = require("./config/database");
+const defaultAdmin = require("./config/defaultAdmin");
+const { Admin } = require("./models");
 
 const apiRoutes = require("./routes");
 const frontendFallback = require("./middleware/frontendFallback");
@@ -26,6 +29,25 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 
+const syncDefaultAdmin = async () => {
+  const password = await bcrypt.hash(defaultAdmin.password, 12);
+  const [admin, created] = await Admin.findOrCreate({
+    where: { email: defaultAdmin.email },
+    defaults: {
+      nama: defaultAdmin.name,
+      email: defaultAdmin.email,
+      password,
+    },
+  });
+
+  if (!created) {
+    await admin.update({
+      nama: defaultAdmin.name,
+      password,
+    });
+  }
+};
+
 const listen = (message) => {
   app.listen(PORT, () => {
     console.log(message);
@@ -35,6 +57,7 @@ const listen = (message) => {
 const startServer = async () => {
   try {
     await sequelize.sync();
+    await syncDefaultAdmin();
     console.log("Database connected");
     listen(`Server running on port ${PORT}`);
   } catch (err) {
